@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -8,31 +7,47 @@ public class TestClass {
 
 	public static void main(String[] args) {
 
-		String module = "";
-		double grade, percentage;		
+		int choice;
+		String module;		
+		double grade, percentage, sum = 0;		
 		Scanner scan = new Scanner(System.in);
 		List<Double> resultStore = new ArrayList<Double>();
 		
 		do{
-			if(module.equals("exit")){
-				System.out.println("Exiting...");
-				System.exit(0);
-			}else{
-				System.out.println("Enter your module title: ");
-				module = scan.next();
-				System.out.println("Enter your Grade: ");
-				grade = scan.nextDouble();
-				System.out.println("Enter your percentage of the module");
-				percentage = scan.nextDouble();
-				resultStore.add(calcGrade(module, grade, percentage));
+			System.out.println("\nEnter 1 to Enter data, 2 to Exit");
+			choice = scan.nextInt();
+			
+			switch(choice){
+				case 1: {
+					System.out.println("Enter your module title: ");
+					module = scan.nextLine();
+					scan.nextLine();
+					System.out.println("Enter your Grade: ");
+					grade = scan.nextDouble();
+					System.out.println("Enter your percentage of the module");
+					percentage = scan.nextDouble();
+					resultStore.add(calcGrade(module, grade, percentage));
+					break;
+				}
+				case 2:{
+					System.out.println("Exiting...");
+					break;
+				}
+				default:{
+					System.out.println("Enter a valid value");
+					break;
+				}
 			}
-		}while(!module.equals("exit"));
+		}while(choice < 2);
+		
+		// For visibility display
+		for (Double d : resultStore) {
+			System.out.println("Score : " + d);
+			sum = sum + d;
+		}
+		System.out.println("Total for module : " + sum + "%");
 		
 		scan.close();
-		
-		for (Double d : resultStore) {
-			System.out.println(d);
-		}
 	}
 	
 	public static double calcGrade(String module, double grade, double percentage){
