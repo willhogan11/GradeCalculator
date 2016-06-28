@@ -1,12 +1,11 @@
 package ie.gmit.sw;
 
-public interface Gradable {
+import java.util.List;
 
-	public abstract double calculateGrade(String module, double grade, double percentage);
-	public abstract void options();
-	public abstract void result();
-	public abstract void percentage();
-	public abstract void grade();
-	public abstract void listResult();
+public interface Gradable {
+	
+	public abstract double calcGrade(String module, double grade, double percentage);
+	public abstract void displayResults(List<Double> resultStore, String module);
+	
 	
 }
