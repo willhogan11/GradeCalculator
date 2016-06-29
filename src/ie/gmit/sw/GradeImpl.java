@@ -14,21 +14,13 @@ public class GradeImpl implements Gradable{
 	}
 
 	public void displayResults(List<Double> resultStore, String module) {
-		HashMap<String, Double> hashMapResults = new HashMap<String, Double>();
-		
 		double sum = 0;
-		
 		for (Double d : resultStore) {
 			System.out.println("Score for section: " + d + "%");
 			sum = sum + d;
 		}
 		System.out.println("\nTotal percentage for Module " + module + " = " + Math.round(sum) + "%");
-		hashMapResults.put(module, sum);
-		
-		/*for (String moduleName : hashMapResults.keySet()) {
-			hashMapResults.put(module, (double) Math.round(sum));
-			System.out.println(moduleName + " " + hashMapResults.get(module));
-		}*/
+		resultStore.clear();
 	}
 	
 	public void displayResults(HashMap<String, Double> hashMapResults) {
@@ -36,7 +28,6 @@ public class GradeImpl implements Gradable{
 			System.out.println(module + " " + hashMapResults.get(module));
 		}
 	}
-	
 	
 	@SuppressWarnings("resource")
 	public int enterChoices() {
@@ -70,7 +61,7 @@ public class GradeImpl implements Gradable{
 
 	public int gatherData() {
 		List<Double> resultStore = new ArrayList<Double>();
-		// HashMap<String, Double> hashMapResults = new HashMap<String, Double>();
+		HashMap<String, Double> hashMapResults = new HashMap<String, Double>();
 		Grade grade = new Grade();
 		
 		do{
@@ -90,7 +81,12 @@ public class GradeImpl implements Gradable{
 								System.out.println("Enter your percentage of the module");
 								grade.setPercentage(enterScores());
 								resultStore.add(calcGrade(grade.getModule(), grade.getGrades(), grade.getPercentage()));
-								// hashMapResults.put(grade.getModule(), grade.getPercentage());
+								
+								double sum = 0;
+								for (Double d : resultStore) {
+									sum = sum + d;
+								}
+								hashMapResults.put(grade.getModule(), sum);
 								break;
 							}
 							case 2 : {
@@ -102,7 +98,9 @@ public class GradeImpl implements Gradable{
 								break;
 							}
 						}
+						
 					}while(grade.getSubChoices() != 2);
+					resultStore.clear();
 				}
 				case 2:{
 					System.out.println("Exiting...");
@@ -118,6 +116,9 @@ public class GradeImpl implements Gradable{
 		displayResults(resultStore, grade.getModule());
 		// displayResults(hashMapResults);
 		
+		for (String moduleName : hashMapResults.keySet()) {
+			System.out.println(moduleName + " " + hashMapResults.get(moduleName));
+		}
 		return grade.getChoices();
 	}
 }
