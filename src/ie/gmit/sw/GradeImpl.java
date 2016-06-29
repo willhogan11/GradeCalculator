@@ -1,5 +1,6 @@
 package ie.gmit.sw;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,14 +21,14 @@ public class GradeImpl implements Gradable{
 		System.out.println("\nTotal percentage for Module " + module + " = " + Math.round(sum) + "%");
 	}
 	
-	public int ScannerChoices() {
+	public int enterChoices() {
 		Scanner scan = new Scanner(System.in);
 		System.out.println("\nEnter 1 to Enter data, 2 to Exit");
 		int choices = scan.nextInt();
 		return choices;
 	}
 	
-	public String ScannerModule() {
+	public String enterModule() {
 		Scanner scan = new Scanner(System.in);
 		System.out.println("Enter your module title: ");
 		String module = scan.next();
@@ -35,35 +36,39 @@ public class GradeImpl implements Gradable{
 		return module;
 	}
 	
-	public double ScannerScores() {
+	public List<Double> results(String module, double grade, double percentage){
+		List<Double> resultStore = new ArrayList<Double>();
+		resultStore.add(calcGrade(module, grade, percentage));
+		return resultStore;
+	}
+	
+	public double enterScores() {
 		Scanner scan = new Scanner(System.in);
 		double scores = scan.nextDouble();
 		return scores;
 	}
 
 	public int gatherData() {
-		
+		List<Double> resultStore = new ArrayList<Double>();
 		Grade grade = new Grade();
 		
 		do{
-			grade.setChoices(ScannerChoices()); 
+			grade.setChoices(enterChoices()); 
 			
 			switch(grade.getChoices()){
 				case 1: {
-					
-					
+					grade.setModule(enterModule());
 					do{
 						System.out.println("Press 1 to enter grades\nPress 2 to exit");
-						grade.setSubChoices(ScannerChoices());
+						grade.setSubChoices(enterChoices());
 						
 						switch(grade.getSubChoices()){
 							case 1 : {
 								System.out.println("Enter your Grade: ");
-								grade.setGrades(ScannerScores());// grade = ScannerScores(grade);
+								grade.setGrades(enterScores());
 								System.out.println("Enter your percentage of the module");
-								grade.setPercentage(ScannerScores()); // percentage = ScannerScores(percentage);
-								// grade.setResultStore(calcGrade(grade.getModule(), grade.getGrades(), grade.getPercentage())); //resultStore.add(calcGrade(module, grade, percentage));
-								calcGrade(grade.getModule(), grade.getGrades(), grade.getPercentage());
+								grade.setPercentage(enterScores());
+								resultStore.add(calcGrade(grade.getModule(), grade.getGrades(), grade.getPercentage()));
 								break;
 							}
 							case 2 : {
@@ -88,7 +93,8 @@ public class GradeImpl implements Gradable{
 			}
 		}while(grade.getChoices() < 2);
 		
-		displayResults(grade.getResultStore(), grade.getModule());
+		// displayResults(results(grade.getModule(), grade.getGrades(), grade.getPercentage()), grade.getModule());
+		displayResults(resultStore, grade.getModule());
 		
 		return grade.getChoices();
 	}

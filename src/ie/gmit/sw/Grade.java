@@ -12,7 +12,7 @@ public class Grade {
 	private int choices;
 	private int subChoices;
 	private double scores;
-	private List<Double> resultStore = new ArrayList<Double>();
+	// private List<Double> resultStore = new ArrayList<Double>();
 	
 	public double getGrades() {
 		return grade;
@@ -56,10 +56,10 @@ public class Grade {
 	public void setSubChoices(int subChoices) {
 		this.subChoices = subChoices;
 	}
-	public List<Double> getResultStore() {
+/*	public List<Double> getResultStore() {
 		return resultStore;
 	}
 	public void setResultStore(List<Double> resultStore) {
 		this.resultStore = resultStore;
-	}
+	}*/
 }
