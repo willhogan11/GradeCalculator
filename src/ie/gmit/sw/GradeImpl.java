@@ -20,83 +20,40 @@ public class GradeImpl implements Gradable{
 			sum = sum + d;
 		}
 		System.out.println("\nTotal percentage for Module " + module + " = " + Math.round(sum) + "%");
-		resultStore.clear();
 	}
 	
-	public void displayResults(HashMap<String, Double> hashMapResults) {
-		for (String module : hashMapResults.keySet()) {
-			System.out.println(module + " " + hashMapResults.get(module));
+	public void displayResults(String module, HashMap<String, Double> hashMapResults) {
+		int i = 1;
+		System.out.println("RESULTS:");
+		for (String moduleName : hashMapResults.keySet()) {
+			System.out.println(i++ + " : " + moduleName + " " + hashMapResults.get(moduleName));
 		}
 	}
 	
-	/*@SuppressWarnings("resource")
-	public int enterChoices() {
-		Scanner scan = new Scanner(System.in);
-		System.out.println("\nEnter 1 to Enter data, 2 to Exit");
-		int choices = scan.nextInt();
-		return choices;
-	}
-	
 	@SuppressWarnings("resource")
-	public int enterSubChoices() {
-		Scanner scan = new Scanner(System.in);
-		int choices = scan.nextInt();
-		return choices;
-	}
-	
-	@SuppressWarnings("resource")
-	public String enterModule() {
-		Scanner scan = new Scanner(System.in);
-		System.out.println("\nEnter your module title: ");
-		String module = scan.next();
-		scan.nextLine();
-		return module;
-	}
-	
-	@SuppressWarnings("resource")
-	public double enterScores() {
-		Scanner scan = new Scanner(System.in);
-		double scores = scan.nextDouble();
-		return scores;
-	}
-	
-	public List<Double> results(String module, double grade, double percentage){
-		List<Double> resultStore = new ArrayList<Double>();
-		resultStore.add(calcGrade(module, grade, percentage));
-		return resultStore;
-	}*/
-
-	
-	
 	public Object input(){
 		
 		Scanner in = new Scanner(System.in);
-		System.out.println("\nEnter 1 to Enter data, 2 to Exit");
 		String inputType = in.nextLine();
 		
 		try {
 			if(inputType.matches("\\d+")){
 				int i = Integer.valueOf(inputType);
-				System.out.println("Integer Entered " + inputType);
 				return i;
 			}
 			else if(inputType.matches("^[a-zA-Z0-9]*$")){
-				System.out.println("String entered " + inputType);
 				String s = inputType.toString();
 				return s;
 			}
 			else if(inputType.matches("[0-9.]*")){
 				double d = Double.valueOf(inputType);
-				System.out.println("Double value " + inputType);
 				return d;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		in.close();
 		return inputType;
 	}
-	
 	
 	public int gatherData() {
 		List<Double> resultStore = new ArrayList<Double>();
@@ -104,12 +61,13 @@ public class GradeImpl implements Gradable{
 		Grade grade = new Grade();
 		
 		do{
-			// grade.setChoices(enterChoices()); 
+			System.out.println("\nEnter 1 to Enter data, 2 to Exit");
 			grade.setChoices((int) input());
 			
 			switch(grade.getChoices()){
 				case 1: {
 					
+					System.out.println("\nEnter your module title: ");
 					grade.setModule((String) input());
 					
 					do{
@@ -118,10 +76,12 @@ public class GradeImpl implements Gradable{
 						
 						switch(grade.getSubChoices()){
 							case 1 : {
-								System.out.println("Enter your Partial Grade: ");
+								System.out.println("Enter your Partial Grade as a decimal value: ");
 								grade.setGrades((double) input());
-								System.out.println("Enter your percentage of the module");
+								
+								System.out.println("Enter your percentage of the module as a decimal value: ");
 								grade.setPercentage((double) input());
+								
 								resultStore.add(calcGrade(grade.getModule(), grade.getGrades(), grade.getPercentage()));
 								
 								double sum = 0;
@@ -140,8 +100,8 @@ public class GradeImpl implements Gradable{
 								break;
 							}
 						}
-						
 					}while(grade.getSubChoices() != 2);
+					displayResults(resultStore, grade.getModule());
 					resultStore.clear();
 				}
 				case 2:{
@@ -155,12 +115,8 @@ public class GradeImpl implements Gradable{
 			}
 		}while(grade.getChoices() < 2);
 		
-		displayResults(resultStore, grade.getModule());
-		// displayResults(hashMapResults);
+		displayResults(grade.getModule(), hashMapResults);
 		
-		for (String moduleName : hashMapResults.keySet()) {
-			System.out.println(moduleName + " " + hashMapResults.get(moduleName));
-		}
 		return grade.getChoices();
 	}
 }
