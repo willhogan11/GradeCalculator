@@ -9,7 +9,7 @@ public class GradeImpl implements Gradable{
 
 	public double calcGrade(String module, double grade, double percentage) {
 		double result = grade * percentage / 100;
-		System.out.println("Result for module " + module + " is " + result + "% / " + percentage + "%");
+		System.out.println("\nResult so far for module " + module.toUpperCase() + " is " + result + "% / " + percentage + "%");
 		return result;
 	}
 
@@ -29,7 +29,7 @@ public class GradeImpl implements Gradable{
 		}
 	}
 	
-	@SuppressWarnings("resource")
+	/*@SuppressWarnings("resource")
 	public int enterChoices() {
 		Scanner scan = new Scanner(System.in);
 		System.out.println("\nEnter 1 to Enter data, 2 to Exit");
@@ -38,18 +38,19 @@ public class GradeImpl implements Gradable{
 	}
 	
 	@SuppressWarnings("resource")
+	public int enterSubChoices() {
+		Scanner scan = new Scanner(System.in);
+		int choices = scan.nextInt();
+		return choices;
+	}
+	
+	@SuppressWarnings("resource")
 	public String enterModule() {
 		Scanner scan = new Scanner(System.in);
-		System.out.println("Enter your module title: ");
+		System.out.println("\nEnter your module title: ");
 		String module = scan.next();
 		scan.nextLine();
 		return module;
-	}
-	
-	public List<Double> results(String module, double grade, double percentage){
-		List<Double> resultStore = new ArrayList<Double>();
-		resultStore.add(calcGrade(module, grade, percentage));
-		return resultStore;
 	}
 	
 	@SuppressWarnings("resource")
@@ -58,28 +59,69 @@ public class GradeImpl implements Gradable{
 		double scores = scan.nextDouble();
 		return scores;
 	}
+	
+	public List<Double> results(String module, double grade, double percentage){
+		List<Double> resultStore = new ArrayList<Double>();
+		resultStore.add(calcGrade(module, grade, percentage));
+		return resultStore;
+	}*/
 
+	
+	
+	public Object input(){
+		
+		Scanner in = new Scanner(System.in);
+		System.out.println("\nEnter 1 to Enter data, 2 to Exit");
+		String inputType = in.nextLine();
+		
+		try {
+			if(inputType.matches("\\d+")){
+				int i = Integer.valueOf(inputType);
+				System.out.println("Integer Entered " + inputType);
+				return i;
+			}
+			else if(inputType.matches("^[a-zA-Z0-9]*$")){
+				System.out.println("String entered " + inputType);
+				String s = inputType.toString();
+				return s;
+			}
+			else if(inputType.matches("[0-9.]*")){
+				double d = Double.valueOf(inputType);
+				System.out.println("Double value " + inputType);
+				return d;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		in.close();
+		return inputType;
+	}
+	
+	
 	public int gatherData() {
 		List<Double> resultStore = new ArrayList<Double>();
 		HashMap<String, Double> hashMapResults = new HashMap<String, Double>();
 		Grade grade = new Grade();
 		
 		do{
-			grade.setChoices(enterChoices()); 
+			// grade.setChoices(enterChoices()); 
+			grade.setChoices((int) input());
 			
 			switch(grade.getChoices()){
 				case 1: {
-					grade.setModule(enterModule());
+					
+					grade.setModule((String) input());
+					
 					do{
-						System.out.println("Press 1 to enter grades\nPress 2 to exit");
-						grade.setSubChoices(enterChoices());
+						System.out.println("\nPress 1 to enter grades\nPress 2 to exit");
+						grade.setSubChoices((int) input());
 						
 						switch(grade.getSubChoices()){
 							case 1 : {
-								System.out.println("Enter your Grade: ");
-								grade.setGrades(enterScores());
+								System.out.println("Enter your Partial Grade: ");
+								grade.setGrades((double) input());
 								System.out.println("Enter your percentage of the module");
-								grade.setPercentage(enterScores());
+								grade.setPercentage((double) input());
 								resultStore.add(calcGrade(grade.getModule(), grade.getGrades(), grade.getPercentage()));
 								
 								double sum = 0;
